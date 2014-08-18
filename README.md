@@ -21,30 +21,55 @@ provides a similar low-level approach.
 
 ## Example
 
-Here is a simple example of this library in use.
-
 ```
+module Main (main) where
+
+import Control.Monad
+import Control.Monad.Error
 import Foreign.C.String
-import Foreign.Marshal.Alloc
 import Foreign.Ptr
 import Foreign.Storable
 import Prelude hiding (init)
 
+import Graphics.UI.SDL hiding (init, quit)
+
 import Graphics.UI.SDL.Image
 
-loadImage :: String -> IO Surface
-loadImage fileName = initPNG >> withCString fileName load >>= peekImage
+type AppM = ErrorT String IO
+
+initApp :: AppM ()
+initApp = do
+  initializedFlags <- liftIO $ init cFlags
+  when (initializedFlags /= cFlags) $ throwError "Error: SDL_image failed to load."
+
+getArg :: AppM String
+getArg = liftIO getArgs >>= extractArg
+  where
+    extractArg [] = throwError "Usage: ex1 <filename>"
+    extractArg (arg:_) = return arg
+
+loadImage :: String -> AppM Surface
+loadImage = loadImage' >=> peekImage
   where
     cFlags = initFlagsToC [InitPNG]
-    initPNG = do
-      initializedFlags <- init cFlags
-      when (initializedFlags /= cFlags) $ fail "SDL_image failed to load."
+    loadImage' fileName = liftIO $ withCString fileName load
     peekImage imagePtr = do
-      when (imagePtr == nullPtr) $ fail "Image failed to load."
-      peek imagePtr
+      when (imagePtr == nullPtr) $ throwError "Error: Image failed to load."
+      liftIO $ peek imagePtr
+
+main :: IO ()
+main = runErrorT (initApp >> getArg >>= loadImage) >>= printResult >> quit
+  where
+    printResult (Left err) = hPutStrLn stderr err
+    printResult (Right image) = putStrLn $ show image
 ```
 
+See the `examples` directory for other examples of the library in action.
+
 ## Building and installing
+
+NOTE: This library is incompatible with the `SDL` and `SDL-image` Haskell packages. You must install
+the Haskell package `sdl2` instead.
 
 To install the package from Hackage:
 
@@ -60,6 +85,15 @@ runhaskell Setup.hs build
 runhaskell Setup.hs install
 ```
 
+## Testing
+
+This library has been tested minimally using:
+
+   * GHC 7.8.3
+   * SDL2 (C library) 2.0.3
+   * SDL_image (C library) 2.0.0
+   * Unit tests in the `test` directory
+
 To build and run tests using GHC:
 
 ```
@@ -73,3 +107,4 @@ runhaskell Setup,.hs test
    * Provide a higher-level, more idiomatic Haskell binding to the library in addition to the
      low-level bindings.
    * Figure out how to unify the myriad different Haskell SDL bindings.
+   * Expand testing to cover more formats and features.
