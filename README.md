@@ -1,4 +1,4 @@
-# SDL2-Image: Haskell bindings for SDL_image 2.0 and greater
+# sdl2-image: Haskell bindings for SDL_image 2.0 and greater
 
 ## Background
 
@@ -13,11 +13,11 @@ changed their implementations to match. The existing Haskell bindings do not wor
 versions of either of these libraries.
 
 There is a new Haskell library, SDL2, which provides updated bindings for SDL v2 and later. However,
-it takes a very different approach from the v1 version of the SDL library, implementing a low-level
-set of bindings.
+it takes a very different approach from the Haskell SDL library it replaces, implementing instead
+a low-level set of bindings.
 
 Hence, this library. This binding for SDL_image version 2 or greater builds upon SDL2 and currently
-provides a similar low-level approach.
+provides a low-level approach quite similar to SDL2.
 
 ## Example
 
@@ -68,8 +68,8 @@ See the `examples` directory for other examples of the library in action.
 
 ## Building and installing
 
-NOTE: This library is incompatible with the `SDL` and `SDL-image` Haskell packages. You must install
-the Haskell package `sdl2` instead.
+_This library is incompatible with the `SDL` and `SDL-image` Haskell packages. You must install
+the Haskell package `sdl2` instead._
 
 To install the package from Hackage:
 
@@ -99,7 +99,7 @@ To build and run tests using GHC:
 ```
 runhaskell Setup.hs --user --enable-tests configure
 runhaskell Setup.hs build
-runhaskell Setup,.hs test
+runhaskell Setup.hs test
 ```
 
 ## Future directions
