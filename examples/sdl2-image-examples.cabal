@@ -1,0 +1,25 @@
+name: sdl2-image-examples
+version: 0
+synopsis: sdl2-image example programs
+description:
+        These are programming examples that show the use of the sdl2-image
+        library. NOTE: they are not for installation or distribution! Use
+        this package file to build the examples.
+build-type: Simple
+cabal-version: >= 1.10
+
+executable show-image-metadata
+  ghc-options:
+    -Wall
+
+  main-is:
+    ShowImageMetadata.hs
+
+  build-depends:
+    base == 4.*,
+    mtl == 2.1.*,
+    sdl2 == 1.1.*,
+    sdl2-image == 0.2.*
+
+  default-language:
+    Haskell2010
