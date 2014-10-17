@@ -1,5 +1,5 @@
 name:                sdl2-image
-version:             0.2
+version:             0.3
 synopsis:            Haskell bindings for SDL_image 2.0
 description:
         Low-level bindings to the SDL_image library, version 2.0.3 or greater.
