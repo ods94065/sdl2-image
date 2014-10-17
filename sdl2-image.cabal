@@ -37,7 +37,7 @@ library
     src/cbits
 
   includes:
-    SDL_Image.h
+    SDL_image.h
     sdl2_image_wrapper.h
 
   extra-libraries:
@@ -69,7 +69,7 @@ test-suite test-sdl2-image
   build-depends:
     base == 4.*,
     sdl2 == 1.1.*,
-    sdl2-image == 0.2.*, 
+    sdl2-image == 0.2.*,
     HUnit == 1.2.*,
     hspec == 1.11.*
 
